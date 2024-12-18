@@ -1,0 +1,9 @@
+# Ignore environment variables file
+.env
+
+# Ignore AWS credentials directory if placed locally (though typically it’s in your home directory)
+.aws/
+
+# Ignore other dependencies and build artifacts
+node_modules/
+dist/
