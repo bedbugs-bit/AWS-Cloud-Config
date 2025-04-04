@@ -1,4 +1,13 @@
 {
-    "name": "Custom Codespace",
-    "build": { "dockerfile": "Dockerfile" }
+  "name": "Custom Codespace",
+  "build": { "dockerfile": "Dockerfile" }, // Tells CodeSpaces which Dockerfile to use
+  "customizations": {
+      "vscode": {
+          "extensions": [ // Installs IDE extensions
+              "golang.go",
+              "redhat.java",
+              "vscjava.vscode-java-pack"
+          ]
+      }
   }
+}
