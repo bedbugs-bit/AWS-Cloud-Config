@@ -18,8 +18,14 @@ RUN curl -LO https://go.dev/dl/go1.21.4.linux-amd64.tar.gz && \
     echo "export GOPATH=\$HOME/go" >> /etc/profile.d/go.sh && \
     echo "export GOROOT=/usr/local/go" >> /etc/profile.d/go.sh
 
+# Install Terraform
+RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" > /etc/apt/sources.list.d/hashicorp.list \
+    && apt-get update && apt-get install -y terraform
+
 # Environment variables
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
     PATH=$PATH:/usr/local/go/bin \
     GOPATH=$HOME/go \
-    GOROOT=/usr/local/go
+    GOROOT=/usr/local/go \
+    AWS_REGION=us-west-2
