@@ -1,1 +1,26 @@
 #!/usr/bin/env bash
+
+# Exit on unset variables and errors
+set -o errexit
+set -o nounset
+
+# Check if bucket name is provided
+if [[ -z "$1" ]]; then
+    echo "Error: No bucket name provided." >&2
+    echo "Usage: $0 <bucket-name>" >&2
+    exit 1
+fi
+
+BUCKET_NAME="$1"
+AWS_REGION="us-east-1"  
+
+# Create the bucket
+if ! aws s3api create-bucket \
+    --bucket "$BUCKET_NAME" \
+    --region "$AWS_REGION" \
+    --create-bucket-configuration LocationConstraint="$AWS_REGION" 2>/dev/null; then
+    echo "Error: Failed to create bucket '$BUCKET_NAME'." >&2
+    exit 1
+fi
+
+echo "Successfully created bucket: $BUCKET_NAME"

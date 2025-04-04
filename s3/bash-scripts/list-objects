@@ -1,1 +1,39 @@
 #!/usr/bin/env bash
+set -o errexit -o nounset -o pipefail  # Fail fast if any error occurs
+
+# Function to list all S3 buckets
+list_s3_buckets() {
+    echo "Fetching S3 buckets..."
+    echo "----------------------"
+
+    # Get bucket list with error handling
+    if ! buckets=$(aws s3api list-buckets --query "Buckets[].Name" --output text 2>&1); then
+        echo "ERROR: Failed to list buckets." >&2
+        echo "Details: $buckets" >&2
+        return 1
+    fi
+
+    # Check if no buckets found
+    if [[ -z "$buckets" ]]; then
+        echo "No S3 buckets found in this account."
+        return 0
+    fi
+
+    # Display buckets with numbers
+    echo "Your S3 buckets:"
+    count=1
+    for bucket in $buckets; do
+        echo "$count. $bucket"
+        ((count++))
+    done
+
+    echo "----------------------"
+    echo "Total buckets: $((count-1))"
+}
+
+# Main execution
+if ! list_s3_buckets; then
+    exit 1
+fi
+
+exit 0
