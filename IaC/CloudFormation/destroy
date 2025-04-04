@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 STACK_NAME="my-simple-stack"
 REGION="us-east-1"
 
